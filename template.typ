@@ -2,6 +2,8 @@
 #let songti = ("Times New Roman", "Songti SC", "Songti TC", "SimSun")
 #let zhongsong = ("Times New Roman","STZhongsong", "SimSun")
 
+
+
 #let bib_cite(..name) = {
   super(cite(..name))
 }
@@ -33,14 +35,14 @@
   })
 }
 
-// #let image_num(_) = {
-//   locate(loc => {
-//     let chapt = counter(heading).at(loc).at(0)
-//     let c = counter("image-chapter" + str(chapt))
-//     let n = c.at(loc).at(0)
-//     str(chapt) + "-" + str(n + 1)
-//   })
-// }
+#let image_num(_) = {
+  locate(loc => {
+    let chapt = counter(heading).at(loc).at(0)
+    let c = counter("image-chapter" + str(chapt))
+    let n = c.at(loc).at(0)
+    str(chapt) + "-" + str(n + 1)
+  })
+}
 
 
 #let equation(equation, caption: "") = {
@@ -58,8 +60,8 @@
     tbl,
     caption: caption,
     supplement: [表],
-    numbering: table_num,
-    kind: "table",
+    // numbering: table_num,
+    // kind: "table",
   )
 }
 
@@ -127,140 +129,6 @@
   })
 }
 
-// 原创性声明和授权书
-#let declaration(anony: false) = {
-  set text(font: songti, 12pt)
-
-  v(5em)
-  align(center)[
-    #text(font: heiti, size: 18pt)[
-      学位论文原创性声明
-    ]
-  ]
-  text(font: songti, size: 12pt)[
-    #set par(justify: false, leading: 1.24em, first-line-indent: 2em)
-    本人郑重声明：所呈交的论文是本人在导师的指导下独立进行研究所取得的 研究成果。除了文中特别加以标注引用的内容外，本论文不包括任何其他个人或集体已经发表或撰写的成果作品。本人完全意识到本声明的法律后果由本人承担。
-  ]
-  v(2em)
-  align(right)[
-    #if not anony {
-      text("作者签名：　　　　　　　年　　月　　日")
-    } else {
-      text("作者签名：██████████年███月███日")
-    }
-  ]
-  
-  v(6em)
-  align(center)[
-    #text(font: heiti, size: 18pt)[
-      学位论文版权使用授权书
-    ]
-  ]
-  text(font: songti, size: 12pt)[
-    #set par(justify: false, leading: 1.24em, first-line-indent: 2em)
-    #if not anony [
-      本学位论文作者完全了解学校有关保障、使用学位论文的规定，同意学校保留并向有关学位论文管理部门或机构送交论文的复印件和电子版，允许论文被查阅和借阅。本人授权省级优秀学士论文评选机构将本学位论文的全部或部分内容编入有关数据进行检索，可以采用影印、缩印或扫描等复制手段保存和汇编本学位论文。
-    ] else [
-      本学位论文作者完全了解学校有关保障、使用学位论文的规定，同意学校保留并向有关学位论文管理部门或机构送交论文的复印件和电子版，允许论文被查阅和借阅。本人授权█████████████将本学位论文的全部或部分内容编入有关数据进行检索，可以采用影印、缩印或扫描等复制手段保存和汇编本学位论文。
-    ]
-    
-
-    学位论文属于 1、保密 □，在#h(3em)年解密后适用本授权书。
-
-    #h(6.3em) 2、不保密 □
-
-    #h(6.3em)请在以上相应方框内打 “√”
-  ]
-
-  v(3em)
-  align(right)[
-    #if not anony {
-      text("作者签名：　　　　　　　年　　月　　日")
-    } else {
-      text("作者签名：██████████年███月███日")
-    }
-  ]
-
-  align(right)[
-    #if not anony {
-      text("导师签名：　　　　　　　年　　月　　日")
-    } else {
-      text("导师签名：██████████年███月███日")
-    }
-  ]
-}
-
-// 参考文献
-#let references(path) = {
-  // 这个取消目录里的 numbering
-  set heading(level: 1, numbering: none)
-
-  set par(justify: false, leading: 1.24em, first-line-indent: 2em)
-
-  bibliography(path, title:"参考文献")
-}
-
-
-// 致谢，请手动调用
-#let acknowledgement(body) = {
-  // 这个取消目录里的 numbering
-  set heading(level: 1, numbering: none)
-  show <_thx>: {
-    // 这个取消展示时的 numbering
-    set heading(level: 1, numbering: none)
-    set align(center)
-    set text(weight: "bold", font: heiti, size: 18pt)
-
-    "致　　谢"
-  } + empty_par()
-
-  
-  [= 致谢 <_thx>]
-
-  body
-}
-
-// 中文摘要
-#let zh_abstract_page(abstract, keywords: ()) = {
-  set heading(level: 1, numbering: none)
-  show <_zh_abstract_>: {
-    align(center)[
-      #text(font: heiti, size: 18pt, "摘　　要")
-    ]
-  }
-  [= 摘要 <_zh_abstract_>]
-
-  set text(font: songti, size: 12pt)
-
-  abstract
-  par(first-line-indent: 0em)[
-    #text(weight: "bold", font: heiti, size: 12pt)[
-      关键词：
-      #keywords.join("；")
-    ]
-  ]
-}
-
-// 英文摘要
-#let en_abstract_page(abstract, keywords: ()) = {
-  set heading(level: 1, numbering: none)
-  show <_en_abstract_>: {
-    align(center)[
-      #text(font: heiti, size: 18pt, "Abstract")
-    ]
-  }
-  [= Abstract <_en_abstract_>]
-
-  set text(font: songti, size: 12pt)
-
-  abstract
-  par(first-line-indent: 0em)[
-    #text(weight: "bold", font: heiti, size: 12pt)[
-      Key Words: 
-      #keywords.join("; ")
-    ]
-  ]
-}
 
 #let project(
   anony: false, // 是否匿名化处理
@@ -269,6 +137,7 @@
   abstract_en: [],
   keywords_zh: (),
   keywords_en: (),
+  group:"",
   school: "",
   author: "",
   id: "",
@@ -342,7 +211,7 @@
       grid(
         columns: (20fr, 1fr),
         it.body,
-        align(center + horizon, 
+        align(center + horizon,
           it.counter.display(it.numbering)
         )
       )
@@ -375,15 +244,21 @@
     }
     #image(logo_path, width: 55%, height: 7%)
 
-    #v(50pt)
+    #v(10pt)
 
     #text(
       size: 36pt,
       font: zhongsong,
       weight: "bold"
-    )[本科生毕业设计(论文)]
-
-    #v(40pt)
+    )[计算机图形学课程报告]
+    
+    #text(
+      size: 18pt,
+      font: zhongsong,
+      weight:"bold"
+    )[题目：]
+    
+    #v(10pt)
 
     #text(
       font: heiti,
@@ -392,7 +267,7 @@
       #title
     ]
 
-    #v(100pt)
+    #v(10pt)
 
     #let info_value(body) = {
       rect(
@@ -408,11 +283,11 @@
         )[
           #body
         ]
-      ) 
+      )
     }
-    
+
     #let info_key(body) = {
-      rect(width: 100%, inset: 2pt, 
+      rect(width: 100%, inset: 2pt,
        stroke: none,
        text(
         font: zhongsong,
@@ -422,22 +297,26 @@
     }
 
     #grid(
-      columns: (70pt, 180pt),
+      columns: (70pt, 360pt),
       rows: (40pt, 40pt),
-      gutter: 3pt,
+      gutter: 2pt,
       info_key("院　　系"),
       info_value(if not anony { school } else { "██████████" }),
       info_key("专业班级"),
       info_value(if not anony { class } else { "██████████" }),
+      info_key("指导教师"),
+      info_value(if not anony { mentor } else { "██████████" }),
+      info_key("组　　名"),
+      info_value(if not anony { group } else { "██████████" }),
       info_key("姓　　名"),
       info_value(if not anony { author } else { "██████████" }),
       info_key("学　　号"),
       info_value(if not anony { id } else { "██████████" }),
-      info_key("指导教师"),
-      info_value(if not anony { mentor } else { "██████████" }),
+
     )
 
-    #v(40pt)
+    #v(20pt)
+
     #text(
       font: zhongsong,
       size: 16pt,
@@ -447,9 +326,6 @@
     #pagebreak()
   ]
 
-  // 原创性声明
-  declaration(anony: anony)
-  pagebreak()
 
   counter(page).update(0)
   // 页眉
@@ -458,11 +334,11 @@
       set text(font: songti, 10pt, baseline: 8pt, spacing: 3pt)
       set align(center)
       if not anony {
-        [华 中 科 技 大 学 毕 业 设 计 (论 文)]
+        [图形学课程报告]
       } else {
         [█████████████████████████]
       }
-      
+
       line(length: 100%, stroke: 0.7pt)
     }
   )
@@ -472,11 +348,11 @@
   set page(
     footer: {
       set align(center)
-      
+
       grid(
         columns: (5fr, 1fr, 5fr),
         line(length: 100%, stroke: 0.7pt),
-        text(font: songti, 10pt, baseline: -3pt, 
+        text(font: songti, 10pt, baseline: -3pt,
           counter(page).display("I")
         ),
         line(length: 100%, stroke: 0.7pt)
@@ -510,32 +386,22 @@
     it
   } + empty_par()
 
-  pagebreak()
+  //pagebreak()
   counter(page).update(1)
-
-  // 摘要
-  zh_abstract_page(abstract_zh, keywords: keywords_zh)
-
-  pagebreak()
-
-  // abstract
-  en_abstract_page(abstract_en, keywords: keywords_en)
-
-  pagebreak()
 
   // 目录
   chinese_outline()
 
   // 正文的页脚
-  
+
   set page(
     footer: {
       set align(center)
-      
+
       grid(
         columns: (5fr, 1fr, 5fr),
         line(length: 100%, stroke: 0.7pt),
-        text(font: songti, 10pt, baseline: -3pt, 
+        text(font: songti, 10pt, baseline: -3pt,
           counter(page).display("1")
         ),
         line(length: 100%, stroke: 0.7pt)
